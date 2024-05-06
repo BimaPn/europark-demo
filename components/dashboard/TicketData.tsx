@@ -8,61 +8,23 @@ import { IoSearch } from "react-icons/io5"
 import ReactPaginate from 'react-paginate'
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io"
 import { useContext, useEffect, useState } from "react"
-import ApiClient from "@/app/api/axios/ApiClient"
 import LinkTickeDetail from "../ui/LinkTicketDetail"
 import { FiSearch } from "react-icons/fi"
-import ChangeTicketPrice from "../ticket/ChangeTicketPrice"
-import TicketScan from "../TicketScan"
 import Search from "../ui/Search"
 import NotFound from "../NotFound"
-import Skeleton from "../skeleton/Skeleton"
 import { dateToTanggal } from "@/helper/convert"
+import { useTickets } from "../provider/TicketsProvider"
 
-type Ticket = {
-  id: string,
-  name:string,
-  email:string,
-  schedule:string,
-  expired:boolean
-  visit_date:string,
 
-}
 const TicketData = () => {
-  const [tickets, setTickets] = useState<Ticket[] | null>(null)
-  const [paginate, setPaginate] = useState<Paginate | null>(null)
-
-  useEffect(() => {
-    ApiClient().get(`/api/tickets/get`)
-    .then((res) => {
-      setTickets(res.data.result)
-      setPaginate(res.data.paginate)
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
-  },[])
+  const { tickets } = useTickets()
+  const [paginate, setPaginate] = useState<Paginate>({lastPage:1})
 
   const fetchPaginateData = (page:number) => {
-    ApiClient().get(`/api/tickets/get?page=${page}`)
-    .then((res) => {
-      setTickets(res.data.result)
-      setPaginate(res.data.paginate)
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
+    console.log(`page: ${page}`)
   }
   const searchTicket = (query:string) => {
-    setTickets(null)
-    setPaginate(null)
-    ApiClient().get(`/api/tickets/search?name=${query}`)
-    .then((res) => {
-      setTickets(res.data.tickets)
-      setPaginate(res.data.paginate)
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
+    console.log("seach")
   }
 
   const renderTickets = () => {
@@ -80,7 +42,7 @@ const TicketData = () => {
         <ActiveBadge />
         )}
         </Td>
-        <Td>{dateToTanggal(new Date(item.visit_date))}</Td>
+        <Td>{dateToTanggal(item.visit_date)}</Td>
         <TdActions>
           <LinkTickeDetail ticketId={item.id} />
         </TdActions>
@@ -94,8 +56,7 @@ const TicketData = () => {
         <span className="font-medium text-lg sm:text-xl text-slate-600">Daftar Tiket</span>
       </div>
       <div className="flexCenter gap-2 sm:gap-3">
-        <TicketScan />
-        <ChangeTicketPrice />
+
       </div>
     </div>
 
@@ -116,13 +77,12 @@ const TicketData = () => {
           </Tr>
         </Thead>
         <Tbody>
-        {!tickets && <TicketDataSkeleton count={5} />}
         {tickets && renderTickets()}
         </Tbody>
       </Table>
     </div>
 
-    {(tickets && tickets.length <= 0) && (
+    {(tickets.length <= 0) && (
       <div className="py-12">
         <NotFound />
       </div>
@@ -148,9 +108,6 @@ const TicketData = () => {
         pageClassName="w-8 aspect-square h-fit flexCenter"
         activeClassName="bg-blue-500 text-white rounded-lg"
         />
-      )}
-      {(!tickets && !paginate) && (
-        <Skeleton className="w-[124px] size-lg " />
       )}
     </div>
   </>
