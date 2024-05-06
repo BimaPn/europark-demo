@@ -1,12 +1,12 @@
 export const tickets: Ticket[] = [
   {
-    id: "dsaSfa34-ahg436", 
+    id: "nyoba", 
     identity_card: "/card/kirill.webp", 
     name: "kirill Antonov",
     email: 'kirill45@gmail.com', 
     visit_date: new Date("04-04-2024"), 
     schedule: "i8.00 - 11.00",
-    expired: true,
+    expired: false,
     whatsapp_number: '6281297638856',
     institute_name: null, 
     institute_address : null,

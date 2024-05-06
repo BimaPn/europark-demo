@@ -7,6 +7,7 @@ type TicketsContext = {
   addTicket: (ticket: Ticket) => void
   searchTickets: (query: string) => Ticket[] 
   findTicket: (ticketId: string) => Ticket | null
+  verifyTicket: (ticketId: string) => boolean
 }
 
 const ticketsContext = createContext<TicketsContext | null>(null)
@@ -31,8 +32,25 @@ const TicketsProvider = ({children}:{children: React.ReactNode}) => {
     return result
   }
 
+  const verifyTicket = (ticketId: string) => {
+    let status = true
+    setTickets((prev) => {
+      return prev.map((ticket) => {
+        if(ticket.id === ticketId) {
+           if(!ticket.expired) {
+             ticket.expired = true
+           }else {
+             status = false
+           }
+        }
+        return ticket
+      })
+    })
+    return status
+  }
+
   return (
-    <ticketsContext.Provider value={{ tickets, addTicket, searchTickets, findTicket }}>
+    <ticketsContext.Provider value={{ tickets, addTicket, searchTickets, findTicket, verifyTicket }}>
       {children}
     </ticketsContext.Provider>
   )

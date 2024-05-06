@@ -1,21 +1,21 @@
 "use client"
-import ApiClient from "@/app/api/axios/ApiClient"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next-nprogress-bar"
+import { useTickets } from "../provider/TicketsProvider"
 import { useState } from "react"
 
 const ButtonVerify = ({ticketId, className}:{ticketId:string, className?:string}) => {
-  const [disabled, setDisabled] = useState<boolean>(false)
   const router = useRouter()
+  const { verifyTicket } = useTickets()
+  const [disabled, setDisabled] = useState(false)
   const onClick = (e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     setDisabled(true)
-    ApiClient(true).post(`/api/tickets/${ticketId}/verify`)
-    .then((res) => {
-      router.push("verify/success")
-    })
-    .catch((err) => {
-      router.push("verify/error")
-    })
+    const isSuccess = verifyTicket(ticketId)
+    if(isSuccess) {
+      router.push('verify/success')
+    }else {
+      router.push('verify/error')
+    }
   }
   return (
     <button

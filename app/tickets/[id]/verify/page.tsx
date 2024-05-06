@@ -1,6 +1,6 @@
 "use client"
-import ApiClient from "@/app/api/axios/ApiClient"
 import TicketIcon from "@/components/icons/TicketIcon"
+import { useTickets } from "@/components/provider/TicketsProvider"
 import ButtonVerify from "@/components/ticket/ButtonVerify"
 import ResponseMessageAdmin from "@/components/ticket/ResponseMessageAdmin"
 import TicketNotFound from "@/components/ticket/TicketNotFound"
@@ -10,50 +10,13 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-type Quantity = {
-  type: string
-  quantity: number
-}
-
-type TicketData = {
-  name: string
-  email: string
-  visit_date: string
-  quantity : Quantity[]
-}
-
 const Page = ({params}:{params : {id:string}}) => {
-  const [data, setData] = useState<TicketData|null>(null)
-  const [errorCode, setErrorCode] = useState<number>(0)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-
-  useEffect(() => {
-    ApiClient().get(`/api/tickets/${params.id}/get`)
-    .then((res) => {
-      setData(res.data.ticket)
-      setIsLoading(false)
-    })
-    .catch((err) => {
-      setErrorCode(err.response.status)
-      setIsLoading(false)
-    })
-  },[])
+  const { findTicket } = useTickets()
+  const [ticket, setTicket] = useState(findTicket(params.id))
   return (
     <>
-      {isLoading && (
-        <div className="w-full h-[80vh] flexCenter">
-          <Spinner className="text-blue-500 text-[126px]"/>
-        </div>
-      )}
-      {(!isLoading && errorCode === 404) && <TicketNotFound />}
-      {(!isLoading && errorCode === 409) && (
-        <ResponseMessageAdmin
-        type="error"
-        message="Verifikasi Gagal"
-        subMessage="Tiket sudah di verifikasi sebelumnya." 
-        />
-      )}
-      {(!isLoading && data) && 
+      {(!ticket) && <TicketNotFound />}
+      {(ticket) && 
       (
         <section className="flexBetween flex-col items-center h-full">
           <div className="flex flex-col items-center mb-4">
@@ -69,18 +32,18 @@ const Page = ({params}:{params : {id:string}}) => {
           </div>
           <div className="w-full px-8 mb-12">
             <FieldItem title="Nama">
-              <span>{data?.name}</span>
+              <span>{ticket.name}</span>
             </FieldItem>
             <FieldItem title="Email">
-              <span>{data?.email}</span>
+              <span>{ticket.email}</span>
             </FieldItem>
             <FieldItem title="Tanggal Kunjungan">
-              <span>{dateToTanggal(new Date(data.visit_date))}</span>
+              <span>{dateToTanggal(ticket.visit_date)}</span>
             </FieldItem>
             <div className="flex justify-between items-start py-4 border-b">
             <span className="text-sm text-slate-700">Jumlah Tiket</span>
               <div className="min-w-[40%] flex flex-col gap-3">
-                {data?.quantity.map((item, index) => (
+                {ticket.quantity.map((item, index) => (
                   <div key={index} className="flexBetween">
                     <span>{item.type}</span>
                     <div>
