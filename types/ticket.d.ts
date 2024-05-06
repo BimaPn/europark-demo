@@ -14,6 +14,7 @@ interface TicketPurchaseContext {
   isDone: boolean,
   setIsDone: Dispatch<SetStateAction<boolean>>
   resetFormData: () => void
+  getTicketQuantity: () => ticketQuantity[]
 }
 
 interface TicketInformationForm {
@@ -37,7 +38,7 @@ interface Schedule {
 interface TicketCheckoutForm {
   name: string
   email: string
-  identity_card_picture: File | null
+  identity_card_picture: string 
   whatsapp_number: string
   institute_name?: string
   institute_address?: string
@@ -67,7 +68,7 @@ interface Ticket {
   identity_card: string
   name: string
   email: string
-  visit_date: string
+  visit_date: Date 
   schedule: string
   expired: boolean
   whatsapp_number: string
