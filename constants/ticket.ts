@@ -37,6 +37,44 @@ export const tickets: Ticket[] = [
       },
     ]
   },
+  {
+    id: "000Sfa34-ahg436", 
+    identity_card: "/card/kirill.webp", 
+    name: "3",
+    email: 'kirill45@gmail.com', 
+    visit_date: new Date("04-04-2024"), 
+    schedule: "i8.00 - 11.00",
+    expired: true,
+    whatsapp_number: '6281297638856',
+    institute_name: null, 
+    institute_address : null,
+    quantity: [
+      {
+        type: "Dewasa",
+        quantity: 1,
+        total_price: 170000
+      }
+    ]
+  },
+  {
+    id: "0101018-hihi999", 
+    identity_card: "/card/lukman.jpg", 
+    name: "4",
+    email: 'lukman55@gmail.com', 
+    visit_date: new Date("04-24-2024"), 
+    schedule: "12.30 - 15.00",
+    expired: true,
+    whatsapp_number: '6281297637656',
+    institute_name: null, 
+    institute_address : null,
+    quantity: [
+      {
+        type: "Dewasa",
+        quantity: 1,
+        total_price: 170000
+      },
+    ]
+  },
 ]
 
 export const ticketQuantities = [

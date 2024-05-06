@@ -1,34 +1,37 @@
 "use client"
 import ActiveBadge from "@/components/ui/ActiveBadge"
 import ExpiredBadge from "@/components/ui/ExpiredBadge"
-import TicketDataSkeleton from "@/components/skeleton/TicketDataSkeleton"
 import { Table, Tbody, Td, TdActions, Th, Thead, Tr } from "@/components/ui/Table"
 import { FaEye, FaTrash } from "react-icons/fa"
 import { IoSearch } from "react-icons/io5"
 import ReactPaginate from 'react-paginate'
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io"
-import { useContext, useEffect, useState } from "react"
+import { useState } from "react"
 import LinkTickeDetail from "../ui/LinkTicketDetail"
 import { FiSearch } from "react-icons/fi"
 import Search from "../ui/Search"
 import NotFound from "../NotFound"
 import { dateToTanggal } from "@/helper/convert"
 import { useTickets } from "../provider/TicketsProvider"
+import { useAlert } from "../AlertMessage"
 
+const ITEMS_PER_PAGE = 2
 
 const TicketData = () => {
-  const { tickets } = useTickets()
-  const [paginate, setPaginate] = useState<Paginate>({lastPage:1})
+  const { setAlert } = useAlert()
+  const { searchTickets } = useTickets()
+  const [tickets, setTickets] = useState(searchTickets(""))
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const fetchPaginateData = (page:number) => {
-    console.log(`page: ${page}`)
+    setCurrentPage(page+1)
   }
   const searchTicket = (query:string) => {
-    console.log("seach")
+    setTickets(searchTickets(query))
   }
 
   const renderTickets = () => {
-    return tickets!.map((item,index) => (
+    return tickets.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item,index) => (
       <Tr key={index} className="border-b">
         <Td> 
           <span className='line-clamp-1'>{item.name}</span>
@@ -88,12 +91,12 @@ const TicketData = () => {
       </div>
     )}
     <div className="absolute bottom-0 right-0 px-4 py-4">
-      {(tickets && paginate) && (
+      {(tickets.length > 0) && (
         <ReactPaginate
-        pageCount={paginate.lastPage}
+        pageCount={Math.ceil(tickets.length/ITEMS_PER_PAGE)}
         pageRangeDisplayed={1}
         marginPagesDisplayed={2}
-        onPageChange={(val) => fetchPaginateData(val.selected+1)}
+        onPageChange={(val) => fetchPaginateData(val.selected)}
         previousLabel={
           <div className="w-8 aspect-square flexCenter">
             <IoIosArrowBack />

@@ -13,13 +13,14 @@ import { useAlert } from "../AlertMessage"
 import ButtonCollectionEdit from "../ButtonCollectionEdit"
 import CollectionUpdate from "../CollectionUpdate"
 
-const ITEMS_PER_PAGE = 2
+const ITEMS_PER_PAGE = 10
 
 const CollectionsData = () => {
   const { setAlert } = useAlert()
   const { searchCollections, deleteCollection } = useCollections() 
   const [collections, setCollections] = useState(searchCollections(""))
   const [currentPage, setCurrentPage] = useState<number>(1)
+
   const fetchPaginateData = (page:number) => {
     setCurrentPage(page+1)
   }
