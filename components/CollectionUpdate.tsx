@@ -1,61 +1,38 @@
 "use client"
 import { createContext, useContext, useEffect, useState } from "react"
 import Modal, { Body, Content, Footer, Header } from "./ui/Modal"
-import { defaultData } from "./CollectionCreate"
-import ApiClient from "@/app/api/axios/ApiClient"
 import { FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react"
 import ButtonPrimary from "./ui/ButtonPrimary"
+import { useCollections } from "./provider/CollectionsProvider"
 import TextAreaExpand from "./ui/TextAreaExpand"
-import ImagesInput, { EditOldImages, Preview, Trigger as ImagesTrigger } from "./ui/ImagesInput"
-import { collectionContext } from "./provider/CollectionProvider"
-import CollectionUpdateSkeleton from "@/components/skeleton/CollectionUpdateSkeleton"
-import { AlertMessageProvider, alertMessageContext } from "./AlertMessage"
+import ImagesInput, { Preview, Trigger } from "./ui/ImagesInput"
+import { useAlert } from "./AlertMessage"
 
-export const collectionUpdateContext = createContext<CollectionUpdateProvider | null>(null)
+const collectionUpdateContext = createContext<CollectionUpdateProvider | null>(null)
 
-const CollectionUpdate = ({children}:{children:React.ReactNode}) => {
+const CollectionUpdate = ({children, onUpdated}:{children:React.ReactNode, onUpdated: (collection: Collection) => void}) => {
   const [id, setId] = useState<string|null>(null)
+
+  const onClose = () => {
+    setId(null)
+  }
   return (
     <collectionUpdateContext.Provider value={{ id, setId }}>
       {children}
       <div className="relative z-[1000]">
       <Modal defaultValue>
-        {id && <ModalContent id={id} onClose={() => setId(null)} />}
+        {id && (
+          <Content width={512} onClose={() => onClose()} className="flex flex-col relative pb-20">
+              <div>
+                <Header title="Ubah Koleksi" onClose={() => onClose()}/>
+              </div>
+              <FormUpdate id={id} onUpdated={(collection) => onUpdated(collection)} />
+          </Content>
+        )}
       </Modal>
       </div>
 
     </collectionUpdateContext.Provider>
-  )
-}
-
-type Data = {
-  data: CollectionUpdate,
-  oldImages: OldImage[]
-}
-
-const ModalContent = ({id, onClose}:{id:string, onClose:() => void}) => {
-  const [data, setData] = useState<Data|null>(null)
-
-  useEffect(() => {
-   ApiClient().get(`/api/collections/${id}/update/get`)
-   .then((res) => {
-      setData({
-        data: {...res.data.collection,images:[],deletedImages:[],_method: "put"},
-        oldImages: res.data.oldImages
-      })
-    })
-   .catch((err) => {
-      console.log(err.response.data)
-    })
-  },[])
-  return (
-  <Content width={512} onClose={() => onClose()} className="flex flex-col relative pb-20">
-      <div>
-        <Header title="Ubah Koleksi" onClose={() => onClose()}/>
-      </div>
-      {!data && <CollectionUpdateSkeleton />}
-      {data && <FormUpdate defaultValue={data} id={id} />}
-  </Content>
   )
 }
 
@@ -64,62 +41,42 @@ type OldImage = {
   image: string
 }
 
-const FormUpdate = ({id, defaultValue}:{id:string, defaultValue: Data}) => {
-  const [formData, setFormData] = useState<CollectionUpdate>(defaultValue.data)
-  const [oldImages, setOldImages] = useState<OldImage[]>(defaultValue.oldImages)
+const FormUpdate = ({id, onUpdated}:{id:string, onUpdated: (collection:Collection) => void}) => {
+  const { findCollection, updateCollection } = useCollections()
+  const [formData, setFormData] = useState({...findCollection(id)})
   const [disabledButton, setDisabledButton] = useState<boolean>(true)
-  const [errors, setErrors] = useState<CollectionErrors | null>() 
-  const { updateCollection } = useContext(collectionContext) as CollectionProvider
-  const { setId } = useContext(collectionUpdateContext) as CollectionUpdateProvider
-  const { setAlert } = useContext(alertMessageContext) as AlertMessageProvider
-
+  const { setAlert } = useAlert()
+  const { setId } = useCollectionUpdate()
   const isFormDataValid = () => {
-    return formData.name === defaultValue.data.name &&
-    formData.createdBy === defaultValue.data.createdBy &&
-    formData.discovery_year === defaultValue.data.discovery_year &&
-    formData.origin === defaultValue.data.origin &&
-    formData.description === defaultValue.data.description &&
-    (oldImages.length > 0 || formData.deletedImages.length > 0)
+    return formData.images!.length < 1
   }
-
+  
   useEffect(() => {
-    setDisabledButton(isFormDataValid())
+    if(!formData) return;
+      setDisabledButton(isFormDataValid())
   },[formData])
 
   const submitForm = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setDisabledButton(true)
-    ApiClient().post(`/api/collections/${id}/update`,formData,{
-      headers: {"Content-Type":"multipart/form-data"}
-    })
-    .then((res) => {
-      setId(null)
-      setAlert({
-        success: true,
-        message: "Koleksi berhasil di ubah."
-      })
-      updateCollection(res.data.collection)
-    })
-    .catch((err) => {
-      setDisabledButton(false) 
-      setErrors(err.data.errors)
+    if(!formData) return;
+
+    updateCollection(formData as Collection)
+    onUpdated(formData as Collection)
+    setId(null)
+    setAlert({
+      success: true,
+      message: "Koleksi berhasil di update"
     })
   }
-
-  const onChange = (field: keyof CollectionCreate, value: string|number|File[]) => {
+  const onChange = (field: keyof CollectionCreate, value: string|number|string[]) => {
     setFormData((prev) => {
       return {...prev,[field]:value}
     })
   }
-  const removeOldImage = (id:string) => {
-    setFormData((prev) => {
-      return {...prev, deletedImages: [id,...prev.deletedImages]} 
-    })
-  }
-  return (
+  return formData && (
      <form onSubmit={submitForm} className="mt-2 overflow-y-auto px-6 rounded-xl">
         <Body className="flex flex-col gap-4">
-          <FormControl isInvalid={errors?.name}>
+          <FormControl>
             <FormLabel
             fontWeight={400} fontSize={15} className='font-normal text-xs'>Nama Koleksi</FormLabel>
             <Input
@@ -129,11 +86,8 @@ const FormUpdate = ({id, defaultValue}:{id:string, defaultValue: Data}) => {
             isRequired
             placeholder='Name'
             />
-            {errors?.name && (
-              <FormErrorMessage>{errors?.name[0]}</FormErrorMessage>
-            )}
           </FormControl>    
-          <FormControl isInvalid={errors?.createdBy}>
+          <FormControl>
             <FormLabel
             fontWeight={400} fontSize={15} className='font-normal text-xs'>Dibuat Oleh</FormLabel>
             <Input
@@ -143,11 +97,8 @@ const FormUpdate = ({id, defaultValue}:{id:string, defaultValue: Data}) => {
             isRequired
             placeholder='Created By'
             />
-            {errors?.createdBy && (
-              <FormErrorMessage>{errors?.createdBy[0]}</FormErrorMessage>
-            )}
           </FormControl>    
-          <FormControl isInvalid={errors?.discovery_year}>
+          <FormControl>
             <FormLabel
             fontWeight={400} fontSize={15} className='font-normal text-xs'>Tahun Pembuatan</FormLabel>
             <Input
@@ -157,11 +108,8 @@ const FormUpdate = ({id, defaultValue}:{id:string, defaultValue: Data}) => {
             isRequired
             placeholder='Invented Year'
             />
-            {errors?.discovery_year && (
-              <FormErrorMessage>{errors?.discovery_year[0]}</FormErrorMessage>
-            )}
           </FormControl> 
-          <FormControl isInvalid={errors?.origin}>
+          <FormControl>
             <FormLabel
             fontWeight={400} fontSize={15} className='font-normal text-xs'>Tempat Asal</FormLabel>
             <Input
@@ -171,23 +119,21 @@ const FormUpdate = ({id, defaultValue}:{id:string, defaultValue: Data}) => {
             isRequired
             placeholder='Origin'
             />
-            {errors?.origin && (
-              <FormErrorMessage>{errors?.origin[0]}</FormErrorMessage>
-            )}
           </FormControl> 
           <FormControl>
             <FormLabel
             fontWeight={400} fontSize={15} className='font-normal text-xs'>Foto Koleksi</FormLabel>
-            <ImagesInput value={formData.images} onChange={(images) => onChange('images',images)}>
-              <Preview>
-                <EditOldImages images={oldImages} onRemove={(id) => removeOldImage(id)} /> 
-              </Preview>
-              <ImagesTrigger className="px-3 py-[6px] rounded-lg bg-blue-500 text-white">
+            <ImagesInput
+            value={formData.images as string[]} 
+            onChange={(images) => onChange('images',images)}
+            >
+              <Preview />
+              <Trigger className="px-3 py-[6px] rounded-lg bg-blue-500 text-white">
                 Tambah Foto
-              </ImagesTrigger>
+              </Trigger>
             </ImagesInput>
           </FormControl> 
-          <FormControl isInvalid={errors?.description}>
+          <FormControl>
             <FormLabel
             fontWeight={400} fontSize={15} className='font-normal text-xs'>Deskripsi</FormLabel>
             <TextAreaExpand
@@ -196,9 +142,6 @@ const FormUpdate = ({id, defaultValue}:{id:string, defaultValue: Data}) => {
             placeholder="Description"
             className="px-4 py-[6px] border border-slate-300 rounded"
             />
-            {errors?.description && (
-              <FormErrorMessage>{errors?.description[0]}</FormErrorMessage>
-            )}
           </FormControl> 
         </Body>
         <Footer className="absolute bottom-0 right-0 left-0 flex justify-end items-center px-4 py-3 bg-white rounded-b-xl">
@@ -210,6 +153,10 @@ const FormUpdate = ({id, defaultValue}:{id:string, defaultValue: Data}) => {
         </Footer> 
       </form>
   )
+}
+
+export const useCollectionUpdate = () => {
+  return useContext(collectionUpdateContext) as CollectionUpdateProvider
 }
 
 export default CollectionUpdate

@@ -7,34 +7,33 @@ import RoundedImage from "../ui/RoundedImage"
 import NotFound from "../NotFound"
 import Link from "next/link"
 import { useCollections } from "../provider/CollectionsProvider"
-import ButtonEdit from "../ui/ButtonEdit"
 import DeleteCollectionButton from "../ui/DeleteCollectionButton"
 import CollectionsAdminSearch from "../ui/CollectionsAdminSearch"
+import { useAlert } from "../AlertMessage"
+import ButtonCollectionEdit from "../ButtonCollectionEdit"
+import CollectionUpdate from "../CollectionUpdate"
 
 const ITEMS_PER_PAGE = 2
 
 const CollectionsData = () => {
-  const { searchCollections } = useCollections() 
+  const { setAlert } = useAlert()
+  const { searchCollections, deleteCollection } = useCollections() 
   const [collections, setCollections] = useState(searchCollections(""))
   const [currentPage, setCurrentPage] = useState<number>(1)
-
   const fetchPaginateData = (page:number) => {
     setCurrentPage(page+1)
   }
   
-  // const deleteData = (id:string) => {
-  //   ApiClient().delete(`api/collections/${id}/delete`)
-  //   .then((res) => {
-  //     setAlert({
-  //       success: true,
-  //       message: "Koleksi berhasil di hapus"
-  //     })
-  //     deleteCollection(id)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.response.data)
-  //   })
-  // }
+  const deleteData = (id:string) => {
+     deleteCollection(id)
+     setCollections((prev) => {
+       return prev.filter((item) => item.id !== id)
+     })
+     setAlert({
+       success: true,
+       message: "Koleksi berhasil dihapus."
+     })
+  }
   const renderCollections = () => {
     return collections.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item,index) => (
       <Tr key={index} className="border-b">
@@ -49,14 +48,14 @@ const CollectionsData = () => {
         <Td>{item.discovery_year}</Td>
         <Td>{item.origin}</Td>
         <TdActions>
-          <ButtonEdit callback={() => console.log("hihi")} />
-          <DeleteCollectionButton onDelete={() => console.log("haha")} />
+          <ButtonCollectionEdit collectionId={item.id} /> 
+          <DeleteCollectionButton onDelete={() => deleteData(item.id)} />
         </TdActions>
       </Tr>
     ))
   }
   return (
-  <>
+  <CollectionUpdate onUpdated={(collection) => setCollections((prev) => [collection, ...prev])}>
     <div className="flex flex-col mb-3">
       <div className="w-full px-1 flexBetween mb-4">
         <div>
@@ -115,7 +114,7 @@ const CollectionsData = () => {
         />
       )}
     </div>
-  </>
+  </CollectionUpdate>
   )
 }
 

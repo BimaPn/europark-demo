@@ -6,7 +6,20 @@ const collectionsContext = createContext<CollectionsContext | null>(null)
 
 const CollectionsProvider = ({children}:{children: React.ReactNode}) => {
   const [collections, setColletions] = useState<Collection[]>(initial)
-
+  
+  const addCollection = (collection: Collection) => {
+    setColletions((prev) => [collection, ...prev])
+  }
+  const updateCollection = (collection: Collection) => {
+    setColletions((prev) => {
+      return prev.map((coll) => {
+        if(coll.id === collection.id) {
+          coll = collection
+        }
+        return coll
+      })
+    })
+  }
   const findCollection = (collectionId: string) => {
     const result = collections.find((collection) => collection.id === collectionId)
     if(!result) {
@@ -19,8 +32,20 @@ const CollectionsProvider = ({children}:{children: React.ReactNode}) => {
     const regex = new RegExp(query, 'i'); 
     return collections.filter(collection => regex.test(collection.name));
   }
+  const deleteCollection = (collectionId: string) => {
+    setColletions((prev) => {
+      return prev.filter((collection) => collection.id !== collectionId)
+    })
+  }
   return (
-    <collectionsContext.Provider value={{ collections, findCollection, searchCollections }}>
+    <collectionsContext.Provider value={{ 
+      collections,
+      addCollection,
+      updateCollection,
+      findCollection, 
+      searchCollections,
+      deleteCollection
+    }}>
     {children}
     </collectionsContext.Provider>
   )

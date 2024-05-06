@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useState } from "react"
+import { createContext, useContext, useState } from "react"
 import { IoIosCheckmarkCircle } from "react-icons/io"
 import { IoCloseCircleSharp } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
@@ -56,6 +56,10 @@ const Overlay = ({message}:{message:AlertMessageProps}) => {
       <span className="font-semibold">{message.message}</span>
     </motion.div>  
   )
+}
+
+export const useAlert = () => {
+  return useContext(alertMessageContext) as AlertMessageProvider
 }
 
 export default AlertMessage

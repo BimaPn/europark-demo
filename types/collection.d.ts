@@ -24,7 +24,7 @@ interface CollectionCreate {
   createdBy: string
   discovery_year: string 
   origin: string 
-  images: File[] 
+  images: string[] 
   description: string
 }
 
@@ -46,14 +46,12 @@ interface DeletedImages {
   image: string
 }
 
-interface CollectionUpdate extends CollectionCreate {
-  deletedImages : string[]
-  _method: string
-}
-
 type CollectionsContext = {
   collections: Collection[]
+  addCollection: (collection: Collection) => void
+  updateCollection: (collection: Collection) => void
   findCollection: (collectionId: string) => Collection | null
   searchCollections: (query: string) => Collection[]
+  deleteCollection: (collectionId: string) => void
 }
 
