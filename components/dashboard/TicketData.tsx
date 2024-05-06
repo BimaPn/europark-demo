@@ -13,12 +13,10 @@ import Search from "../ui/Search"
 import NotFound from "../NotFound"
 import { dateToTanggal } from "@/helper/convert"
 import { useTickets } from "../provider/TicketsProvider"
-import { useAlert } from "../AlertMessage"
 
 const ITEMS_PER_PAGE = 2
 
 const TicketData = () => {
-  const { setAlert } = useAlert()
   const { searchTickets } = useTickets()
   const [tickets, setTickets] = useState(searchTickets(""))
   const [currentPage, setCurrentPage] = useState<number>(1)

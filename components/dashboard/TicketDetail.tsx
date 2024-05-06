@@ -36,7 +36,7 @@ const TicketDetail = ({data}:{data:Ticket}) => {
           </div>
           <FieldItem title="Nama" value={data.name}/>
           <FieldItem title="Email" value={data.email}/>
-          <FieldItem title="Tanggal Kunjungan" value={dateToString(new Date(data.visit_date))}/>
+          <FieldItem title="Tanggal Kunjungan" value={dateToString(data.visit_date)}/>
           <FieldItem title="Jadwal" value={data.schedule}/>
           <FieldItem title="Kadaluarsa" value={data.expired ? "Sudah" : "Belum"}/>
           <FieldItem title="Kartu Identitas" className="!items-start">

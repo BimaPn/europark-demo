@@ -6,6 +6,7 @@ type TicketsContext = {
   tickets: Ticket[]
   addTicket: (ticket: Ticket) => void
   searchTickets: (query: string) => Ticket[] 
+  findTicket: (ticketId: string) => Ticket | null
 }
 
 const ticketsContext = createContext<TicketsContext | null>(null)
@@ -22,8 +23,16 @@ const TicketsProvider = ({children}:{children: React.ReactNode}) => {
     return tickets.filter(ticket => regex.test(ticket.name));
   }
 
+  const findTicket = (ticketId: string) => {
+    const result = tickets.find((ticket) => ticket.id === ticketId)
+    if(!result) {
+      return null
+    }
+    return result
+  }
+
   return (
-    <ticketsContext.Provider value={{ tickets, addTicket, searchTickets }}>
+    <ticketsContext.Provider value={{ tickets, addTicket, searchTickets, findTicket }}>
       {children}
     </ticketsContext.Provider>
   )
