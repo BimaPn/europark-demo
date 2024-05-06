@@ -12,7 +12,8 @@ import DeleteCollectionButton from "../ui/DeleteCollectionButton"
 import CollectionsAdminSearch from "../ui/CollectionsAdminSearch"
 
 const CollectionsData = () => {
-  const { collections } = useCollections() 
+  const { searchCollections } = useCollections() 
+  const [collections, setCollections] = useState(searchCollections(""))
   const [paginate, setPaginate] = useState<Paginate>({lastPage:1})
 
   const fetchPaginateData = (page:number) => {
@@ -33,7 +34,7 @@ const CollectionsData = () => {
   //   })
   // }
   const renderCollections = () => {
-    return collections!.map((item,index) => (
+    return collections.map((item,index) => (
       <Tr key={index} className="border-b">
         <Td className='flex items-center gap-2'>
           <RoundedImage 
@@ -63,7 +64,7 @@ const CollectionsData = () => {
       </div>
 
       <div>
-        <CollectionsAdminSearch /> 
+        <CollectionsAdminSearch search={(query) => setCollections(searchCollections(query))} /> 
       </div>
     </div>
 

@@ -3,21 +3,9 @@
 import Search from "./Search"
 
 
-const CollectionsAdminSearch = () => {
-
-  const searchTicket = (query:string) => {
-    // setCollections(null)
-    // ApiClient().get(`/api/collections/search/admin?name=${query}`)
-    // .then((res) => {
-    //   setCollections(res.data.collections)
-    //   setPaginate(res.data.paginate)
-    // })
-    // .catch((err) => {
-    //   console.log(err.response.data)
-    // })
-  }
+const CollectionsAdminSearch = ({search}:{search:(query: string) => void}) => {
   return (
-    <Search onSearch={searchTicket} placeholder="Cari Koleksi" />
+    <Search onSearch={search} placeholder="Cari Koleksi" />
   )
 }
 
