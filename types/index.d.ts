@@ -12,3 +12,8 @@ interface ImagesInputContext {
 interface Paginate {
   lastPage: number
 }
+interface Pricing {
+  id: number | string
+  type: string
+  price: number|string
+}

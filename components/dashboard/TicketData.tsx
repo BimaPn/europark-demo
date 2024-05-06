@@ -13,6 +13,8 @@ import Search from "../ui/Search"
 import NotFound from "../NotFound"
 import { dateToTanggal } from "@/helper/convert"
 import { useTickets } from "../provider/TicketsProvider"
+import TicketScan from "../TicketScan"
+import ChangeTicketPrice from "../ticket/ChangeTicketPrice"
 
 const ITEMS_PER_PAGE = 2
 
@@ -57,7 +59,8 @@ const TicketData = () => {
         <span className="font-medium text-lg sm:text-xl text-slate-600">Daftar Tiket</span>
       </div>
       <div className="flexCenter gap-2 sm:gap-3">
-
+        <TicketScan />
+        <ChangeTicketPrice />
       </div>
     </div>
 

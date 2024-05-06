@@ -1,12 +1,11 @@
 "use client"
-import { useContext, useEffect, useState } from "react"
+import { useState } from "react"
 import Modal, { Body, Footer, Header, Content } from "../ui/Modal"
 import { TbEdit } from "react-icons/tb"
 import ButtonPrimary from "../ui/ButtonPrimary"
 import { FormControl, NumberInput, NumberInputField } from "@chakra-ui/react"
-import ApiClient from "@/app/api/axios/ApiClient"
-import Skeleton from "../skeleton/Skeleton"
-import { AlertMessageProvider, alertMessageContext } from "../AlertMessage"
+import { useAlert } from "../AlertMessage"
+import { usePricing } from "../provider/PriceProvider"
 
 const ChangeTicketPrice = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,76 +22,25 @@ const ChangeTicketPrice = () => {
   )
 }
 
-interface Pricing {
-  id: number | string
-  price: number|string
-}
-
-interface DefaultPricing extends Pricing {
-  type: string
-}
-
 const FormContent = ({onClose}:{onClose:() => void}) => {
-  const [disabledButton, setDisabledButton] = useState(true)
-  const [defaultPricings, setDefaultPricings] = useState<DefaultPricing[] | null>(null)
-  const [pricings, setPricings] = useState<Pricing[] | null>(null)
-  const { setAlert } = useContext(alertMessageContext) as AlertMessageProvider
-
-  useEffect(() => {
-    ApiClient().get(`/api/tickets/ticket-pricings/get`)
-    .then((res) => {
-      const result = res.data.pricings
-      setPricings(result.map((item:Pricing) => {
-        return {id: item.id, price: item.price}
-      }))
-      setDefaultPricings(res.data.pricings)
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
-  },[]) 
-
-  useEffect(() => {
-    if(!pricings || !defaultPricings) return
-    setDisabledButton(isDataValid(pricings) ? false : true)
-  },[pricings])
-  
-  const isDataValid = (_pricings:Pricing[]) => {
-    let isNotValid = false
-    for(let i = 0;i < _pricings.length;i++) {
-      if(_pricings[i].price != defaultPricings![i].price) {
-        isNotValid = true
-      }
-    }
-    return isNotValid 
-  }
+  const { prices, changePrices } = usePricing()
+  const [pricings, setPricings] = useState<Pricing[]>([...prices])
+  const { setAlert } = useAlert()
 
   const formSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setDisabledButton(true)
-    ApiClient().put(`/api/tickets/ticket-pricings/update`,{pricings})
-    .then((res) => {
-      onClose()
-      setAlert({
-        success: true,
-        message: "Harga berhasil diubah."
-      })
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-      onClose()
-      setAlert({
-        success: false,
-        message: "Harga gagal diubah."
-      })
+    changePrices(pricings)
+    onClose()
+    setAlert({
+      success: true,
+      message: "Berhasil mengubah harga."
     })
   }
-  const changePrice = (pricing:Pricing) => {
-    if(!pricings) return
+  const changePrice = (id: string, price: number|string) => {
     setPricings((prev) => {
-      return prev!.map((item) => {
-        if(item.id === pricing.id) {
-          item.price = pricing.price
+      return prev.map((item) => {
+        if(item.id === id) {
+          item.price = price
         }
         return item
       })
@@ -108,20 +56,15 @@ const FormContent = ({onClose}:{onClose:() => void}) => {
             <span className="text-sm text-slate-800">
             Ubah harga tiket menggunakan mata uang rupiah (Rp).</span>
           </div>
-            {!defaultPricings && (
-              <div className="flex flex-col gap-10">
-                <LoadingSkeleton/>
-              </div>
-
-            )}
-            {(defaultPricings && pricings) && defaultPricings.map((item, i) => (
+ 
+            {prices.map((item, i) => (
               <div key={item.id} className="flexBetween">
                 <span>{item.type}</span>
                 <FormControl className="!w-1/2">
                   <NumberInput
                   defaultValue={item.price}
                   value={pricings[i].price} 
-                  onChange={(value) => changePrice({id:item.id, price: value})}
+                  onChange={(value) => changePrice(item.id as string, value)}
                   min={1000}
                   isRequired
                   >
@@ -135,7 +78,6 @@ const FormContent = ({onClose}:{onClose:() => void}) => {
         className="absolute bottom-0 right-0 left-0 flex justify-end items-center px-4 py-3 bg-white rounded-b-xl">
           <ButtonPrimary
           type="submit"
-          disabled={disabledButton}
           className="!rounded-lg bg-blue-500 text-white"
           >Ubah</ButtonPrimary> 
         </Footer> 
@@ -144,13 +86,4 @@ const FormContent = ({onClose}:{onClose:() => void}) => {
   )
 }
 
-const LoadingSkeleton = () => {
-  return Array(4).fill(0).map((_,index) => (
-    <div key={index} className="flexBetween">
-      <Skeleton className="w-1/3 size-md" />
-      <Skeleton className="w-1/3 size-md" />
-    </div>  
-    )
-  )
-}
 export default ChangeTicketPrice

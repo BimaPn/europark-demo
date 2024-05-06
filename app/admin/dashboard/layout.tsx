@@ -1,4 +1,5 @@
 import AlertMessage from '@/components/AlertMessage'
+import PriceProvider from '@/components/provider/PriceProvider'
 import DashboardLayout from '@/layouts/DashboardLayout'
 import type { Metadata } from 'next'
 
@@ -14,7 +15,9 @@ export default function RootLayout({
     <>
       <DashboardLayout>
         <AlertMessage>
-          {children}
+          <PriceProvider>
+            {children}
+          </PriceProvider>
         </AlertMessage>
       </DashboardLayout>
     </>

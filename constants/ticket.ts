@@ -97,13 +97,13 @@ export const ticketQuantities = [
     type: 'Dewasa',
     quantity: 0,
     description: 'Memiliki kartu pelajar.',
-    price: 170000
+    price: 200000
   },
   {
     id: 4,
     type: 'Lansia',
     quantity: 0,
     description: 'Diatas 65 tahun.',
-    price: 200000
+    price: 170000
   },
 ]
