@@ -9,16 +9,16 @@ import { useEffect, useState } from "react"
 import { FiSearch } from "react-icons/fi"
 
 const Page = () => {
-  const { collections } = useCollections()
+  const { searchCollections } = useCollections()
   const [loaded, setLoaded] = useState<boolean>(false)
+  const [collections, setCollections] = useState(searchCollections(""))
 
   useEffect(() => {
     setLoaded(true)
   },[])
 
   const onSearch = async (query:string) => {
-    // setCollections(null)
-    console.log(query)
+    setCollections(searchCollections(query))
   }
   return (
     <section className="boxWidth min-h-[90vh]">

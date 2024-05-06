@@ -14,8 +14,13 @@ const CollectionsProvider = ({children}:{children: React.ReactNode}) => {
     }
     return result
   }
+
+  const searchCollections = (query: string) => {
+    const regex = new RegExp(query, 'i'); 
+    return collections.filter(collection => regex.test(collection.name));
+  }
   return (
-    <collectionsContext.Provider value={{ collections, findCollection }}>
+    <collectionsContext.Provider value={{ collections, findCollection, searchCollections }}>
     {children}
     </collectionsContext.Provider>
   )

@@ -54,5 +54,6 @@ interface CollectionUpdate extends CollectionCreate {
 type CollectionsContext = {
   collections: Collection[]
   findCollection: (collectionId: string) => Collection | null
+  searchCollections: (query: string) => Collection[]
 }
 
