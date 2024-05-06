@@ -2,32 +2,92 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: 'Poppins', sans-serif;
+  transition-property: color, background-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 400ms;
+}
+.boxWidth {
+  @apply max-w-[1920px] mx-auto px-3 ss:px-4 sm:px-7 md:px-9
+}
+.flexCenter{
+  @apply flex justify-center items-center
+}
+.flexBetween{
+  @apply flex justify-between items-center
+}
+.flexColumn{
+  @apply flex flex-col justify-center items-center
+}
+.text-leading {
+  @apply text-justify block leading-[28px]
+}
+.section-title {
+  @apply font-bold text-[34px] sm:text-[42px] leading-[44px] sm:leading-[52px]
+}
+.background-cover {
+  @apply bg-center bg-no-repeat bg-cover
+}
+/* Table */
+th, td {
+  @apply px-2 py-2
+}
+.td-custom {
+  @apply !py-[10px]
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+.shadow-footer {
+  box-shadow: 0px 16px 48px 0px rgba(0, 0, 0, 0.176);
+}
+
+.transition-background {
+  transition-property: background;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.transition-top {
+  transition-property: top;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.section {
+  @apply mb-[118px] ss:mb-[132px] sm:mb-[148px] md:mb-[152px] lg:mb-[164px] xl:mb-[178px]
+}
+.landing-padding-top {
+  @apply pt-[116px] ss:pt-[127px] sm:pt-[142px] md:pt-[146px] lg:pt-[158px] xl:pt-[172px]
+}
+
+.horizontal-scroll-animation {
+  animation: scrollHorizontal 10s linear infinite;
+}
+
+.horizontal-scroll-animation2 {
+  animation: scrollHorizontal2 10s linear infinite;
+}
+
+@keyframes scrollHorizontal {
+  from {
+    transform: translateX(2%);
+  }
+  to {
+    transform: translateX(-100%);
   }
 }
+@keyframes scrollHorizontal2 {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-200%);
+  }
+}
+.button-up-transition {
+  transition: bottom ease-in-out 500ms;
+}
+.backdrop-blur-transition {
+  transition: filter ease-in-out 300ms;
+}
+

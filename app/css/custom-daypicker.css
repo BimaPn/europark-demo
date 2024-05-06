@@ -1,0 +1,6 @@
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: rgb(59 130 246);; 
+  --rdp-accent-color-dark: rgb(59 130 246);
+   --rdp-background-color: rgb(59 130 246);
+}
