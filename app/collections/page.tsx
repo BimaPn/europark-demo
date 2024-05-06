@@ -1,35 +1,24 @@
 "use client"
 import CollectionsSearch from "@/components/CollectionsSearch"
 import NotFound from "@/components/NotFound"
+import { useCollections } from "@/components/provider/CollectionsProvider"
 import CollectionSkeleton from "@/components/skeleton/CollectionSkeleton"
-import axios from "axios"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { FiSearch } from "react-icons/fi"
 
 const Page = () => {
-  const [collections, setCollections] = useState<Collection[] | null>(null)
+  const { collections } = useCollections()
+  const [loaded, setLoaded] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/api/collections/get`)  
-    .then((res) => {
-      setCollections(res.data.collections)
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
+    setLoaded(true)
   },[])
 
   const onSearch = async (query:string) => {
-    setCollections(null)
-    await axios.get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/api/collections/search?name=${query}`)
-    .then((res) => {
-      setCollections(res.data.collections)
-    })
-    .catch((err) => {
-      console.log(err.response.data)
-    })
+    // setCollections(null)
+    console.log(query)
   }
   return (
     <section className="boxWidth min-h-[90vh]">
@@ -42,16 +31,16 @@ const Page = () => {
       </div>
 
     <div className="grid grid-cols-2 ss:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 ss:gap-4 sm:gap-5 mt-9">
-      {collections && collections.map((item, i) => (
+      {loaded && collections.map((item, i) => (
       <Link key={item.id} href={`/collections/${item.id}`}>
         <CollectionItem 
         key={item.id}
-        thumbnail={item.thumbnail} name={item.name} year={item.discovery_year} />
+        thumbnail={item.images[0]} name={item.name} year={item.discovery_year} />
       </Link>
       ))}
-      {!collections && <CollectionSkeleton count={5}/>}
+      {!loaded && <CollectionSkeleton count={5}/>}
     </div>
-    {(collections && collections.length <= 0) && (
+    {(collections.length <= 0) && (
       <div className="w-full flexCenter py-16">
         <NotFound />
       </div>
