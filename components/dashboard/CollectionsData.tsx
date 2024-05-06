@@ -11,13 +11,15 @@ import ButtonEdit from "../ui/ButtonEdit"
 import DeleteCollectionButton from "../ui/DeleteCollectionButton"
 import CollectionsAdminSearch from "../ui/CollectionsAdminSearch"
 
+const ITEMS_PER_PAGE = 2
+
 const CollectionsData = () => {
   const { searchCollections } = useCollections() 
   const [collections, setCollections] = useState(searchCollections(""))
-  const [paginate, setPaginate] = useState<Paginate>({lastPage:1})
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const fetchPaginateData = (page:number) => {
-    console.log(`page: ${page}`) 
+    setCurrentPage(page+1)
   }
   
   // const deleteData = (id:string) => {
@@ -34,7 +36,7 @@ const CollectionsData = () => {
   //   })
   // }
   const renderCollections = () => {
-    return collections.map((item,index) => (
+    return collections.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item,index) => (
       <Tr key={index} className="border-b">
         <Td className='flex items-center gap-2'>
           <RoundedImage 
@@ -91,12 +93,12 @@ const CollectionsData = () => {
       </div>
     )}
     <div className="absolute bottom-0 right-0 px-4 py-4">
-      {(paginate) && (
+      {collections.length > 0 && (
         <ReactPaginate
-        pageCount={paginate.lastPage}
+        pageCount={Math.ceil(collections.length/ITEMS_PER_PAGE)}
         pageRangeDisplayed={1}
         marginPagesDisplayed={2}
-        onPageChange={(val) => fetchPaginateData(val.selected+1)}
+        onPageChange={(val) => fetchPaginateData(val.selected)}
         previousLabel={
           <div className="w-8 aspect-square flexCenter">
             <IoIosArrowBack />
