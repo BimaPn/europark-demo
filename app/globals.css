@@ -37,6 +37,10 @@ th, td {
   @apply !py-[10px]
 }
 
+.font-title {
+  font-family: var(--font-marcellus) !important;
+}
+
 .shadow-footer {
   box-shadow: 0px 16px 48px 0px rgba(0, 0, 0, 0.176);
 }

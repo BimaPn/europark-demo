@@ -19,7 +19,7 @@ const TicketSection = () => {
       viewport={viewport} 
       className="w-[90%] sm:w-[75%] flexCenter flex-col gap-5 overflow-hidden pb-2">
         <div 
-        className="mx-auto flex flex-wrap justify-center gap-[10px] text-center section-title !leading-[32px] sm:!leading-[44px]">
+        className="mx-auto flex flex-wrap justify-center gap-[10px] text-center section-title font-title !leading-[32px] sm:!leading-[44px]">
           {ticketSectionTitle.map((item,i) => (
             <motion.span
             variants={slideUpWordsVariant}

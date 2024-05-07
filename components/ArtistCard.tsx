@@ -113,8 +113,8 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
             animate={{ y:0,opacity:1 }}
             exit={{ y:-80 }}
             className='sm:basis-1/2 flex justify-center pb-6 xs:pb-8 sm:pb-14 sm:pl-12 lg:pl-16 xl:pl-20 flex-col'>
-              <span className='font-semibold text-[30px] xs:text-[35px] sm:text-[35px] md:text-[40px] lg:text-[46px]'>{name}</span>
-              <span className='font-medium text-sm sm:text-base'>{lifetime}</span>
+              <span className='font-semibold text-[30px] xs:text-[35px] sm:text-[35px] md:text-[40px] font-title lg:text-[46px]'>{name}</span>
+              <span className='font-medium text-sm sm:text-base font-title'>{lifetime}</span>
             </motion.div>
 
             <motion.div
@@ -129,7 +129,7 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
                   <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='w-40 sm:w-44 md:w-52 xl:w-60' />
                 ))}
                 {artworks.map((item, i) => (
-                  <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='w-40 sm:w-44 md:w-52 xl-60' />
+                  <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='w-40 sm:w-44 md:w-52 xl:w-60' />
                 ))}
               </motion.div>
             </motion.div>
@@ -153,7 +153,7 @@ const ContentCard = ({link, image, className}:{link:string,image:string, classNa
         className='rounded-lg group-hover:scale-110 group-hover:brightness-90 transition-transform !duration-500'
         />
       </Link> 
-      <div className="flex flex-col">
+      <div className="flex flex-col font-title">
       <span className="font-medium sm:text-lg">Emanuel Abraham</span>
       <span className="font-medium text-xs">1098 BC</span>
       </div>

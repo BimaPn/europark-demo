@@ -63,7 +63,7 @@ const Artists = () => {
       <div 
       className="min-h-[150px] xs:min-h-[130px] ss:min-h-[100px] sm:min-h-[100px] overflow-hidden relative">
         <div className="flex flex-col gap-1 absolute top-0 left-0">
-          <motion.span variants={slideUpVariant} className="section-title">Lukisan dari Seniman Terbaik</motion.span>
+          <motion.span variants={slideUpVariant} className="section-title font-title">Lukisan dari Seniman Terbaik</motion.span>
           <motion.span variants={slideUpVariant}>Temukan lukisan-lukisan dari seniman terbaik didunia</motion.span>
         </div>
 

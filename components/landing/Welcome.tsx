@@ -16,10 +16,10 @@ const Welcome = () => {
       variants={parentVariant} 
       className="flex md:flex-row flex-col md:text-start text-center justify-between gap-3 sm:gap-6 md:gap-10">
         <motion.div variants={slideUpVariant} className="basis-[60%] h-fit">
-          <span className="section-title">Selamat Datang Di Museum Seni Terbaik di Indonesia</span>
+          <span className="section-title font-title">Selamat Datang Di Museum Seni Terbaik di Indonesia</span>
         </motion.div>
         <motion.div variants={slideUpVariant}  className="basis-[40%] leading-[32px] h-fit">
-          <span className="text-base sm:text-lg md:text-xl">Europark adalah museum pertama di Indonesia yang memiliki seni lukisan legendaris dan terbaik di dunia. Memiliki banyak koleksi lukisan yang beragam dan memiliki kisah yang unik</span>
+          <span className="text-base sm:text-lg md:text-xl">Europark adalah museum pertama di Indonesia yang memiliki seni lukisan legendaris dan terbaik di dunia. Temukan koleksi lukisan yang beragam dan memiliki kisah yang unik</span>
         </motion.div>
       </motion.div>
 

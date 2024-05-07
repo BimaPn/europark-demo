@@ -2,6 +2,7 @@
 import { collections, navigations, socialMedia } from "@/constants/list"
 import { Box, Center, Icon } from "@chakra-ui/react"
 import Link from "next/link"
+import { HiMiniBuildingLibrary } from "react-icons/hi2"
 
 const Footer = () => {
   return (
@@ -9,8 +10,9 @@ const Footer = () => {
     <Box className="boxWidth flex flex-col gap-4 md:gap-12">
       <Box className="flex ss:justify-normal justify-between flex-wrap gap-3 ss:gap-0 mb-6 ss:mb-8 md:mb-12">
         <div className="md:w-1/4 ss:w-1/3 w-full">
-          <Link href="/" className="font-bold text-3xl md:text-4xl flex items-center gap-1 mb-5 ss:m-0">
-              EuroPark
+         <Link href={`/`}  className="font-bold text-3xl  flex items-center gap-1 mb-5 ss:m-0">
+            <HiMiniBuildingLibrary className=" -mt-[3px]"/>
+            <span className=" font-bold">EuroPark</span>
           </Link>
         </div>
         <Box className="w-[40%] ss:w-1/3 md:w-1/4">
