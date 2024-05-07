@@ -58,10 +58,10 @@ th, td {
 }
 
 .section {
-  @apply mb-[118px] ss:mb-[132px] sm:mb-[148px] md:mb-[152px] lg:mb-[164px] xl:mb-[178px]
+  @apply mb-[138px] ss:mb-[152px] sm:mb-[168px] md:mb-[172px] lg:mb-[184px] xl:mb-[198px]
 }
 .landing-padding-top {
-  @apply pt-[116px] ss:pt-[127px] sm:pt-[142px] md:pt-[146px] lg:pt-[158px] xl:pt-[172px]
+  @apply pt-[126px] ss:pt-[137px] sm:pt-[152px] md:pt-[156px] lg:pt-[168px] xl:pt-[182px]
 }
 
 .horizontal-scroll-animation {
