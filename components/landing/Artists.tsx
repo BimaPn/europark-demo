@@ -43,11 +43,10 @@ const artists = [
 const Artists = () => {
   const control = useAnimation();
   const parent = useRef(null)
-  const inView = useInView(parent,{margin: "0% 0% -60% 0%", once:false});
+  const inView = useInView(parent,{margin: "0% 0% -50% 0%", once:false});
   useEffect(() => {
      if(inView) {
        control.start("visible")
-       document.getElementById("main")!.style.backgroundColor = "#000000"
      }else{
        control.start("hidden")
      }
@@ -58,6 +57,7 @@ const Artists = () => {
     ref={parent}
     variants={cardsParentVariant}
     initial="hidden"
+
     animate={control}
     className="boxWidth section !bg-transparent flex flex-col gap-4 xs:gap-1 sm:gap-6 text-white">
       <div 

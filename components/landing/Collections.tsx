@@ -1,9 +1,8 @@
 "use client"
 import Link from "next/link"
 import { HiMiniArrowLongRight } from "react-icons/hi2"
-import { motion, useAnimation, useInView } from "framer-motion"
+import { motion } from "framer-motion"
 import { childrenViewport, imageSlideUpVariant, parentVariant, slideUpVariant, viewport } from "@/constants/framerOptions"
-import { useEffect, useRef } from "react"
 
 const collectionsGroup = [
     {
@@ -45,16 +44,8 @@ const collectionsGroup3 = [
   ]
 
 const Collections = () => {
-  const parent = useRef(null)
-  const inView = useInView(parent,{margin: "0% 0% -60% 0%", once:false});
-  useEffect(() => {
-     if(inView) {
-       document.getElementById("main")!.style.backgroundColor = "#FFFFFF"
-     }
-  },[inView]);
-
   return (
-    <section ref={parent} className="boxWidth section relative">
+    <section className="boxWidth section relative">
       <div className="sm:w-[38%] md:w-[35%] sm:absolute sm:top-0 md:-top-3 left-8 overflow-hidden">
         <motion.div
         variants={parentVariant}

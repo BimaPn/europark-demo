@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar"
 import TicketSection from "@/components/landing/TicketSection"
 import ButtonUp from "@/components/landing/ButtonUp"
 import ShowButtonUp from "@/components/provider/ShowButtonUp"
+import DarkBackground from "@/components/landing/DarkBackground"
 
 const Home = () => {
   return (
@@ -21,9 +22,7 @@ const Home = () => {
         <div id="main" className="relative z-[50] bg-white landing-padding-top">
           <Welcome />
           <Collections />
-          <Artists />
-          <TicketSection />
-          <Footer />
+          <DarkBackground />
         </div>
       </main>
     </ShowButtonUp>
