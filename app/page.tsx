@@ -7,10 +7,11 @@ import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
 import TicketSection from "@/components/landing/TicketSection"
 import ButtonUp from "@/components/landing/ButtonUp"
+import ShowButtonUp from "@/components/provider/ShowButtonUp"
 
 const Home = () => {
   return (
-    <>
+    <ShowButtonUp>
       <ButtonUp />
       <main>
         <div className="relative h-screen overflow-hidden">
@@ -25,7 +26,7 @@ const Home = () => {
           <Footer />
         </div>
       </main>
-    </>
+    </ShowButtonUp>
   )
 }
 

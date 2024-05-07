@@ -3,6 +3,7 @@ import Image from "next/image"
 import { motion,AnimatePresence } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
+import { useShowButton } from "./provider/ShowButtonUp"
 
 export type Artwork = {
   id: string | number
@@ -16,6 +17,7 @@ export type ArtistInfo = {
 }
 
 const ArtistCard = ({name, avatar, ...rest}:ArtistInfo & {className?:string}) => {
+  const { changeOpen } = useShowButton()
   const [isOpen, setIsOpen] = useState(false)
   const [isShowCotent, setIsShowContent] = useState(false)
   const [position, setPosition] = useState(false)
@@ -31,10 +33,12 @@ const ArtistCard = ({name, avatar, ...rest}:ArtistInfo & {className?:string}) =>
     if(!isOpen && !isShowCotent) {
       setIsOpen(!isOpen)
       delayContent()
+      changeOpen(false)
     }
     if(isOpen && isShowCotent) {
       setIsShowContent(!isShowCotent)
       delayParent() 
+      changeOpen(true)
     }
   }
   const delayParent = () => {
@@ -90,8 +94,7 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
         const scrollPercentage = Math.floor((scrollTop / (scrollHeight-clientHeight)) * 80)
         setX(`-${scrollPercentage}%`)
       }
-
-       })
+     })
      return () => {
        document.body.style.overflow = "auto"
      }
