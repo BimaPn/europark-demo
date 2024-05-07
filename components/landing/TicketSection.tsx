@@ -47,9 +47,9 @@ const TicketSection = () => {
       className="min-w-full relative flex gap-8 overflow-hidden scroll-horizontal-parent">
         <span className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-[3px] bg-primary" />
 
-        <div className="min-w-full flex gap-8 horizontal-scroll-animation">
+        <div className="min-w-[220%] xs:min-w-[160%] sm:min-w-[130%] md:min-w-full flex gap-8 horizontal-scroll-animation">
           {[1,2,3].map((item) => (
-            <div key={item} className="w-1/2 aspect-square relative">
+            <div key={item} className="w-full aspect-square relative">
               <Image 
               src={`/images/gallery/${item}.jpg`}
               fill 
@@ -59,9 +59,9 @@ const TicketSection = () => {
           ))}
         </div>
 
-        <div className="min-w-full flex gap-8 horizontal-scroll-animation">
+        <div className="min-w-[220%] xs:min-w-[160%] sm:min-w-[130%] md:min-w-full flex gap-8 horizontal-scroll-animation">
           {[1,2,3].map((item) => (
-            <div key={item} className="w-1/2 aspect-square relative">
+            <div key={item} className="w-full aspect-square relative">
               <Image 
               src={`/images/gallery/${item}.jpg`}
               fill 

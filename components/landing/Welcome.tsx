@@ -19,7 +19,8 @@ const Welcome = () => {
           <span className="section-title font-title">Selamat Datang Di Museum Seni Terbaik di Indonesia</span>
         </motion.div>
         <motion.div variants={slideUpVariant}  className="basis-[40%] leading-[32px] h-fit">
-          <span className="text-base sm:text-lg md:text-xl">Europark adalah museum pertama di Indonesia yang memiliki seni lukisan legendaris dan terbaik di dunia. Temukan koleksi lukisan yang beragam dan memiliki kisah yang unik</span>
+          <span className="text-base sm:text-lg md:text-xl">
+          Europark adalah museum pertama di Indonesia yang memiliki seni lukisan legendaris dan terbaik di dunia. <span className="hidden sm:inline">Temukan koleksi lukisan yang beragam dan memiliki kisah yang unik</span></span>
         </motion.div>
       </motion.div>
 
@@ -28,16 +29,16 @@ const Welcome = () => {
       initial="hidden"
       whileInView={`visible`}
       viewport={childrenViewport} 
-      className="w-full flexCenter gap-3 md:gap-5">
+      className="w-full flexCenter gap-1 sm:gap-3 md:gap-5">
         <motion.div 
         variants={slideUpVariant}
-        className="bg-[url('/images/about/1.jpg')] background-cover basis-[31.5%] shadow aspect-[10/16] sm:aspect-[3/4] md:aspect-square rounded-lg"/>
+        className="bg-[url('/images/about/1.jpg')] background-cover basis-[31.5%] shadow aspect-[10/16] sm:aspect-[3/4]  rounded-lg"/>
         <motion.div 
         variants={slideUpVariant}
-        className="bg-[url('/images/about/2.jpg')] bg-no-repeat bg-cover bg-center basis-1/3 shadow aspect-[10/16] sm:aspect-[3/4] md:aspect-square rounded-lg"/>
+        className="bg-[url('/images/about/2.jpg')] bg-no-repeat bg-cover bg-center basis-1/3 shadow aspect-[10/16] sm:aspect-[3/4] rounded-lg"/>
         <motion.div 
         variants={slideUpVariant}
-        className="bg-[url('/images/about/3.jpg')] backgroud-cover basis-[31.5%] aspect-[10/16] sm:aspect-[3/4] md:aspect-square shadow rounded-lg"/>
+        className="bg-[url('/images/about/3.jpg')] backgroud-cover basis-[31.5%] aspect-[10/16] sm:aspect-[3/4] shadow  rounded-lg"/>
       </motion.div>
 
     </motion.section>

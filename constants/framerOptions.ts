@@ -1,10 +1,10 @@
 export const viewport = {
   once: true,
-  margin: "0% 0% -60% 0%"  
+  margin: "0% 0% -50% 0%"  
 }
 export const childrenViewport = {
   once: true,
-  margin: "0% 0% -50% 0%"  
+  margin: "0% 0% -40% 0%"  
 }
 export const parentVariant = {
   visible: { opacity:1,transition:{staggerChildren:.1} },
