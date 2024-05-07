@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
-import { motion,AnimatePresence, useTransform, useScroll } from "framer-motion"
-import { useEffect, useState } from "react"
+import { motion,AnimatePresence } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 
 export type Artwork = {
@@ -55,7 +55,7 @@ const ArtistCard = ({name, avatar, ...rest}:ArtistInfo & {className?:string}) =>
   return (
     <motion.div
     layout
-    className={`flexCenter overflow-hidden ${rest.className}
+    className={`flexCenter ${rest.className} overflow-hidden
     ${isOpen ? "w-screen h-screen fixed top-0 left-0 !z-[3000] rounded-none":"relative rounded-lg"} ${position ? "z-[3000]":"z-[50]"}
     `}
     transition={{ duration: .6}}
@@ -78,8 +78,20 @@ const ArtistCard = ({name, avatar, ...rest}:ArtistInfo & {className?:string}) =>
 }
 
 const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avatar: string, lifetime: string, artworks: Artwork[]}) => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [x, setX] = useState<string>("0%")
    useEffect(() => {
      document.body.style.overflow = "hidden"
+     containerRef.current?.addEventListener("scroll",(e) => {
+      if(containerRef.current) {
+        const scrollTop = containerRef.current.scrollTop
+        const scrollHeight = containerRef.current.scrollHeight
+        const clientHeight = containerRef.current.clientHeight
+        const scrollPercentage = Math.floor((scrollTop / (scrollHeight-clientHeight)) * 80)
+        setX(`-${scrollPercentage}%`)
+      }
+
+       })
      return () => {
        document.body.style.overflow = "auto"
      }
@@ -90,29 +102,40 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
     initial={{ opacity:0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="absolute inset-0 flex items-end text-white">
-      <div className='w-full h-[50%] sm:h-[52%] flex sm:items-center justify-between px-4 py-12 sm:p-0 sm:justify-center flex-col sm:flex-row gap-8'>
-        <motion.div
-        transition={{ duration: .4, staggerChildren: .3}}
-        initial={{ y: -80,opacity:0 }}
-        animate={{ y:0,opacity:1 }}
-        exit={{ y:-80 }}
-        className='sm:basis-1/2 flex sm:pl-8 justify-end sm:gap-3 flex-col'>
-          <span className='font-semibold text-[46px]'>{name}</span>
-          <span className='font-medium text-sm sm:text-base'>{lifetime}</span>
-        </motion.div>
+    ref={containerRef}
+    className="absolute inset-0 text-white overflow-auto">
+      <div className='w-full h-[280vh] pl-3 pr-0 sm:px-4 sm:p-0 relative'>
+        <div className="sticky top-0 w-full h-screen flex items-end">
+          <div className="w-full h-fit flex flex-col sm:flex-row">
+            <motion.div
+            transition={{ duration: .4, staggerChildren: .3}}
+            initial={{ y: -80,opacity:0 }}
+            animate={{ y:0,opacity:1 }}
+            exit={{ y:-80 }}
+            className='sm:basis-1/2 flex justify-center pb-6 xs:pb-8 sm:pb-14 sm:pl-12 lg:pl-16 xl:pl-20 flex-col'>
+              <span className='font-semibold text-[30px] xs:text-[35px] sm:text-[35px] md:text-[40px] lg:text-[46px]'>{name}</span>
+              <span className='font-medium text-sm sm:text-base'>{lifetime}</span>
+            </motion.div>
 
-        <motion.div
-        transition={{ duration: .6 }}
-        initial={{ x:500 }}
-        animate={{ x:0 }}
-        exit={{ x:500 }}
-        className='sm:basis-1/2 flex items-center gap-5 overflow-x-auto'>
-          {artworks.map((item, i) => (
-            <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='min-w-[33.333%] xs:min-w-[20%] sm:min-w-[25%]' />
-          ))}
-        </motion.div>
+            <motion.div
+            transition={{ duration: .6 }}
+            initial={{ x:500 }}
+            animate={{ x:0 }}
+            exit={{ x:500 }}
 
+            className='sm:basis-[60%] flex pb-8 gap-5 overflow-hidden h-fit'>
+              <motion.div style={{ x }}  className="flex flex-nowrap gap-4 sm:gap-6">
+                {artworks.map((item, i) => (
+                  <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='w-40 sm:w-44 md:w-52 xl:w-60' />
+                ))}
+                {artworks.map((item, i) => (
+                  <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='w-40 sm:w-44 md:w-52 xl-60' />
+                ))}
+              </motion.div>
+            </motion.div>
+
+          </div>
+        </div>
       </div>   
     </motion.div>
   )
@@ -120,15 +143,22 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
 
 const ContentCard = ({link, image, className}:{link:string,image:string, className?:string}) => {
   return (
-    <Link href={link} className={`aspect-[3/4.5] relative ${className}`}>
-      <Image 
-      src={image} 
-      alt={"example"}
-      fill
-      style={{objectFit:"cover"}}
-      className='rounded-lg'
-      />
-    </Link> 
+    <div className="flex flex-col gap-1 group">
+      <Link href={link} className={`aspect-[3/4.5] overflow-hidden rounded-lg relative ${className}`}>
+        <Image 
+        src={image} 
+        alt={"example"}
+        fill
+        style={{objectFit:"cover"}}
+        className='rounded-lg group-hover:scale-110 group-hover:brightness-90 transition-transform !duration-500'
+        />
+      </Link> 
+      <div className="flex flex-col">
+      <span className="font-medium sm:text-lg">Emanuel Abraham</span>
+      <span className="font-medium text-xs">1098 BC</span>
+      </div>
+    </div>
+
   )
 }
 

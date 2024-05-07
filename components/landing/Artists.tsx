@@ -86,12 +86,5 @@ const Artists = () => {
   )
 }
 
-const Card = () => {
-  return (
-    <div>
-
-    </div>
-  )
-}
 
 export default Artists
