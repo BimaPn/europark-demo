@@ -12,33 +12,7 @@ import {
   } from "@/constants/framerOptions"
 import { useEffect, useRef } from "react"
 import { artist1, artist2 } from "@/constants/artistArtworks"
-
-const artists = [
-{
-  name: "J.M.W Turner",
-  avatar: "/images/artists/turner.jpg",
-  lifetime: "1775 M - 1851 M",
-  artworks: artist1
-},
-{
-  name: "Rembrandt",
-  avatar: "/images/artists/rembrandt.jpg",
-  lifetime: "1606 M - 1669 M",
-  artworks: artist2
-},
-{
-  name: "Vincent van Gogh",
-  avatar: "/images/artists/vangogh.jpg",
-  lifetime: "1853 M - 1890 M",
-  artworks: artist1
-},
-{
-  name: "Peter Paul Rubens",
-  avatar: "/images/artists/peter.jpg",
-  lifetime: "1577 M - 1640 M",
-  artworks: artist2
-}
-]
+import { artists } from "@/constants/collections"
 
 const Artists = () => {
   const control = useAnimation();

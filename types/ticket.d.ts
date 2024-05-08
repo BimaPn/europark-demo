@@ -36,6 +36,7 @@ interface Schedule {
 }
 
 interface TicketCheckoutForm {
+  id?: string
   name: string
   email: string
   identity_card_picture: string 

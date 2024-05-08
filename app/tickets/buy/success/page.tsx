@@ -3,14 +3,16 @@ import SuccessIcon from "@/components/icons/SuccessIcon"
 import { ticketPurchaseContext } from "@/components/provider/TicketPurchaseProvider"
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
+import { QRCode } from "react-qrcode-logo"
+import { RiErrorWarningFill } from "react-icons/ri";
 
 const Page = () => {
   const { isDone, resetFormData,
   ticketCheckoutData } = useContext(ticketPurchaseContext) as TicketPurchaseContext
-  const [email, setEmail] = useState<string>("")
+  const [id, setId] = useState<string>("")
 
   useEffect(() => {
-    setEmail(ticketCheckoutData.email)
+    setId(ticketCheckoutData.id as string)
     if(isDone) {
       resetFormData() 
     }
@@ -21,14 +23,22 @@ const Page = () => {
       <div className="flex flex-col items-center">
         <SuccessIcon width={230}/>
         <span className="font-medium text-xl">Tiket berhasil dibuat !</span>
-        <div className="mt-6">
-          <span className="w-[80%] block text-center mx-auto leading-[28px]">
-          Ticket telah berhasil dibuat dan ticket telah dikirim ke email
-           <span className="font-semibold ml-[6px]">{email}</span></span>
-        </div>
 
-        <div className="px-4 py-4 bg-green-200 border border-green-500 rounded-xl mt-6">
-          <span>Visit <Link href={`/admin/dashboard/home`} className="font-semibold">'/admin/dashboard/home'</Link> to access dashboard page.</span>
+        <div className="flexCenter flex-col gap-5 px-4 py-3 bg-green-200 border border-green-500 rounded-xl mt-6 relative">
+
+          <div className="absolute top-0 right-0 p-2">
+          <RiErrorWarningFill className="text-[26px] text-green-800" />
+          </div>
+          <div className="w-fit p-4 bg-white rounded-xl mt-3">
+            <QRCode value={`${process.env.NEXT_PUBLIC_APP_NAME}/tickets/${id}/verify`} />
+          </div>
+          <span className="text-center">Save this QR Code if you want to verify the ticket, you can visit
+           <Link href={`/admin/dashboard/tickets`} className="font-semibold hover:underline"> this page</Link> to scan it.
+          </span>
+
+          <div className="mt-6">
+            <span className="font-medium text-sm">*In the real project, It will send the Qr Code through email.</span>
+          </div>
         </div>
 
       </div>

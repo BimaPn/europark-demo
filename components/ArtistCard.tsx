@@ -6,8 +6,10 @@ import Link from "next/link"
 import { useShowButton } from "./provider/ShowButtonUp"
 
 export type Artwork = {
-  id: string | number
+  id: string
   image: string
+  name: string
+  year: string
 }
 export type ArtistInfo = {
   name: string
@@ -129,10 +131,14 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
             className='sm:basis-[60%] flex pb-8 gap-5 overflow-hidden h-fit'>
               <motion.div style={{ x }}  className="flex flex-nowrap gap-4 sm:gap-6">
                 {artworks.map((item, i) => (
-                  <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='w-40 sm:w-44 md:w-52 xl:w-60' />
-                ))}
-                {artworks.map((item, i) => (
-                  <ContentCard key={i} link={`/collections/${item.id}`} image={item.image} className='w-40 sm:w-44 md:w-52 xl:w-60' />
+                  <ContentCard 
+                  key={i} 
+                  link={`/collections/${item.id}`} 
+                  image={item.image}
+                  name={item.name}
+                  year={item.year}
+                  className='w-40 sm:w-44 md:w-52 xl:w-60' 
+                  />
                 ))}
               </motion.div>
             </motion.div>
@@ -144,7 +150,7 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
   )
 }
 
-const ContentCard = ({link, image, className}:{link:string,image:string, className?:string}) => {
+const ContentCard = ({link, image, name, year, className}:{link:string,image:string, name: string, year: string, className?:string}) => {
   return (
     <div className="flex flex-col gap-1 group">
       <Link href={link} className={`aspect-[3/4.5] overflow-hidden rounded-lg relative ${className}`}>

@@ -62,7 +62,7 @@ const CheckoutForm = ({disableSubmit}:{disableSubmit:boolean}) => {
   const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const newTicket = {
-      id: `tickets-${Date.now()}-${Math.random()}`, 
+      id: `tickets-${1}`, 
       identity_card: ticketCheckoutData.identity_card_picture, 
       name: ticketCheckoutData.name,
       email: ticketCheckoutData.email, 
@@ -74,7 +74,8 @@ const CheckoutForm = ({disableSubmit}:{disableSubmit:boolean}) => {
       institute_address : ticketCheckoutData.institute_address ?? null,
       quantity: getTicketQuantity() 
     }
-
+    
+    setTicketCheckoutData((prev: TicketCheckoutForm) => ({...prev, id: newTicket.id})) 
     addTicket(newTicket)
     setIsDone(true)
     router.push("/tickets/buy/success")

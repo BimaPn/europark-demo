@@ -7,7 +7,7 @@ import { childrenViewport, imageSlideUpVariant, parentVariant, slideUpVariant, v
 const collectionsGroup = [
     {
       image: "/images/example4.jpg",
-      aspect: "aspect-[3/4.6]"
+      aspect: "sm:aspect-[3/5] md:aspect-[3/4.6] lg:aspect-[3/5]"
     },
     {
       image: "/images/example7.jpg",
