@@ -69,7 +69,7 @@ const Sidebar = ({ onClose, ...rest }: SidebarProps) => {
           key={link.name}
           icon={link.icon}
           path={link.path}
-          className={`${pathname.includes(link.path) && "bg-blue-500 font-medium text-white"}`} 
+          className={`${pathname.includes(link.path) && "bg-blue-50 font-medium"}`} 
           >
             {link.name}
           </NavItem>
@@ -83,7 +83,7 @@ const NavItem = ({ icon, children, path, className, }: {className?:string} & Nav
   return (
     <Link href={`/admin/dashboard/${path}`}>
       <div
-      className={`flex items-center gap-1 rounded-lg px-2 py-2 mx-2 cursor-pointer hover:bg-blue-400 hover:text-white ${className}`}
+      className={`flex items-center gap-1 rounded-lg px-2 py-2 mx-2 cursor-pointer hover:bg-blue-50 ${className}`}
         >
         <div className="w-8 aspect-square flexCenter">
           {icon}

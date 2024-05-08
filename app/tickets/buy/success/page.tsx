@@ -3,7 +3,7 @@ import SuccessIcon from "@/components/icons/SuccessIcon"
 import { ticketPurchaseContext } from "@/components/provider/TicketPurchaseProvider"
 import Link from "next/link"
 import { useContext, useEffect, useState } from "react"
-import { QRCode } from "react-qrcode-logo"
+import QRCode from 'qrcode.react'
 import { RiErrorWarningFill } from "react-icons/ri";
 
 const Page = () => {

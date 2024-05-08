@@ -110,7 +110,7 @@ const TicketData = () => {
         }
         className="flex items-center gap-1" 
         pageClassName="w-8 aspect-square h-fit flexCenter"
-        activeClassName="bg-blue-500 text-white rounded-lg"
+        activeClassName="bg-blue-100 rounded-lg"
         />
       )}
     </div>

@@ -38,7 +38,7 @@ export const tickets: Ticket[] = [
     ]
   },
   {
-    id: "000Sfa34-ahg436", 
+    id: "000Sfa34-ahg4yy36", 
     identity_card: "/card/kirill.webp", 
     name: "3",
     email: 'kirill45@gmail.com', 
@@ -57,7 +57,7 @@ export const tickets: Ticket[] = [
     ]
   },
   {
-    id: "0101018-hihi999", 
+    id: "0101018-hihddi999", 
     identity_card: "/card/lukman.jpg", 
     name: "4",
     email: 'lukman55@gmail.com', 
