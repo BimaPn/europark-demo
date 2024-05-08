@@ -163,8 +163,8 @@ const ContentCard = ({link, image, name, year, className}:{link:string,image:str
         />
       </Link> 
       <div className="flex flex-col font-title">
-      <span className="font-medium sm:text-lg">Emanuel Abraham</span>
-      <span className="font-medium text-xs">1098 BC</span>
+      <span className="font-medium sm:text-lg">{name}</span>
+      <span className="font-medium text-xs">{year}</span>
       </div>
     </div>
 
