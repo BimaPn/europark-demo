@@ -8,6 +8,22 @@ body {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 400ms;
 }
+/* CUSTOM CURSORBAR */
+*::-webkit-scrollbar-track
+{
+	background-color: transparent;
+}
+
+*::-webkit-scrollbar
+{
+	width: 8px;
+}
+
+*::-webkit-scrollbar-thumb
+{
+  @apply bg-gray-400 dark:bg-[#E1E5EA] rounded-full  
+}
+
 .boxWidth {
   @apply max-w-[1920px] mx-auto px-3 ss:px-4 sm:px-7 md:px-9
 }

@@ -33,12 +33,16 @@ export const socialMedia = [
 export const collections = [
     {
         "label" : "The Potato Eaters",
-        "link" : "/collections/4af62d38-6e0a-42b4-9bb1-48a49f538380"
+        "link" : "/collections/4"
     },    {
         "label" : "The Honeysuckle Bower",
-        "link" : "/collections/29c8e298-2a8c-47c5-9beb-1dfd236ff3d3"
+        "link" : "/collections/20"
     },    {
         "label" : "The Shipwreck",
-        "link" : "/collections/bb84b5ae-af06-45a1-a2ef-4b9817e29a9a"
+        "link" : "/collections/12"
+    },
+    {
+        "label" : "A Man in Armour",
+        "link" : "/collections/11"
     },
 ]

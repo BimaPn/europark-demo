@@ -109,7 +109,7 @@ const ArtistCardContent = ({name, avatar, lifetime, artworks}:{name:string, avat
     exit={{ opacity: 0 }}
     ref={containerRef}
     className="absolute inset-0 text-white overflow-auto">
-      <div className='w-full h-[280vh] pl-3 pr-0 sm:px-4 sm:p-0 relative'>
+      <div className='w-full h-[180vh] ss:h-[240vh] pl-3 pr-0 sm:px-4 sm:p-0 relative'>
         <div className="sticky top-0 w-full h-screen flex items-end">
           <div className="w-full h-fit flex flex-col sm:flex-row">
             <motion.div
