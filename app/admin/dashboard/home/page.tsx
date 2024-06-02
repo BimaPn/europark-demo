@@ -9,14 +9,14 @@ const Page = () => {
     <>
       <PageTitle title="Dashboard" />
       <section className=''>
-        <div className='bg-white p-4 rounded-lg'>
+        <div className='bg-white p-3 ss:p-4 ss:rounded-lg'>
           <div className='mb-3'>
             <span className='font-medium ss:text-base text-sm text-slate-600'>{dateToTanggal(new Date(),true)}</span>
           </div>
           <Stats /> 
         </div>
 
-        <div className='mt-3 ss:mt-4'>
+        <div className='mt-1 ss:mt-4'>
           <TicketAnalytic className="w-full" />
         </div>
       </section>  

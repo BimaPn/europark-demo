@@ -12,14 +12,15 @@ import CollectionsAdminSearch from "../ui/CollectionsAdminSearch"
 import { useAlert } from "../AlertMessage"
 import ButtonCollectionEdit from "../ButtonCollectionEdit"
 import CollectionUpdate from "../CollectionUpdate"
+import CollectionCreate from "../CollectionCreate"
 
 const ITEMS_PER_PAGE = 10
 
 const CollectionsData = () => {
   const { setAlert } = useAlert()
-  const { searchCollections, deleteCollection } = useCollections() 
-  const [collections, setCollections] = useState(searchCollections(""))
+  const { collections, searchCollections, deleteCollection } = useCollections() 
   const [currentPage, setCurrentPage] = useState<number>(1)
+  const [query, setQuery] = useState("")
 
   const fetchPaginateData = (page:number) => {
     setCurrentPage(page+1)
@@ -27,16 +28,14 @@ const CollectionsData = () => {
   
   const deleteData = (id:string) => {
      deleteCollection(id)
-     setCollections((prev) => {
-       return prev.filter((item) => item.id !== id)
-     })
      setAlert({
        success: true,
        message: "Koleksi berhasil dihapus."
      })
   }
   const renderCollections = () => {
-    return collections.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item,index) => (
+    return collections.filter((coll) => new RegExp(query, 'i').test(coll.name)) 
+    .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((item,index) => (
       <Tr key={index} className="border-b">
         <Td className='flex items-center gap-2'>
           <RoundedImage 
@@ -56,17 +55,17 @@ const CollectionsData = () => {
     ))
   }
   return (
-  <CollectionUpdate onUpdated={(collection) => setCollections((prev) => [collection, ...prev])}>
+  <CollectionUpdate>
     <div className="flex flex-col mb-3">
       <div className="w-full px-1 flexBetween mb-4">
         <div>
           <span className="font-medium text-lg sm:text-xl text-slate-600">Daftar Koleksi</span>
         </div>
-
+        <CollectionCreate />
       </div>
 
       <div>
-        <CollectionsAdminSearch search={(query) => setCollections(searchCollections(query))} /> 
+        <CollectionsAdminSearch search={(query) => setQuery(query)} /> 
       </div>
     </div>
 

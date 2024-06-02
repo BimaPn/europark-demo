@@ -6,7 +6,7 @@ const DashboardLayout = async ({children}:{children:React.ReactNode}) => {
   return (
     <div className='min-h-screen bg-sky-100'>
       <TopSideBar name={authUser.name} avatar={authUser.avatar} />
-      <Box ml={{ base: 0, md: 60 }} className='ss:!p-4 !p-3'>
+      <Box ml={{ base: 0, md: 60 }} className='ss:!p-4 !pt-1'>
         {children}
       </Box>
     </div>

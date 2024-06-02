@@ -50,7 +50,7 @@ const Footer = () => {
       </Box>
 
       <Center className="text-sm text-center">
-        © 2023 Bima PN. All Rights Reserved.
+        © 2024 Bima PN. All Rights Reserved.
       </Center>
     </Box>
   </footer>

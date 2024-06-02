@@ -11,14 +11,14 @@ const CollectionsProvider = ({children}:{children: React.ReactNode}) => {
     setColletions((prev) => [collection, ...prev])
   }
   const updateCollection = (collection: Collection) => {
-    setColletions((prev) => {
-      return prev.map((coll) => {
+    const updatedData = collections.map((coll) => {
         if(coll.id === collection.id) {
-          coll = collection
+          return {...collection}
+        }else {
+          return coll
         }
-        return coll
       })
-    })
+    setColletions(updatedData)
   }
   const findCollection = (collectionId: string) => {
     const result = collections.find((collection) => collection.id === collectionId)

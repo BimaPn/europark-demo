@@ -5,7 +5,7 @@ const Page = () => {
   return (
   <>
     <PageTitle title="Koleksi" />
-    <section className="bg-white min-h-[89.5vh] rounded-lg px-4 py-4 overflow-y-scroll pb-16 relative">
+    <section className="bg-white min-h-[89.5vh] ss:rounded-lg px-4 py-4 overflow-y-scroll pb-16 relative">
       <CollectionsData />  
     </section>
   </>

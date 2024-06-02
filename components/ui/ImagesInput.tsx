@@ -5,8 +5,6 @@ import { IoClose } from 'react-icons/io5'
 const imagesInputContext = createContext<ImagesInputContext | null>(null)
 
 const ImagesInput = ({children,value,className,onChange}:InputImages) => {
-
-
     const removeImage = (index:number) => {
         onChange(value.filter(image => value.indexOf(image) !== index))
     }

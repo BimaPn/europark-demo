@@ -47,7 +47,7 @@ const TicketCheckout = () => {
   },[ticketCheckoutData])
 
   return (
-    <section className='flex flex-col gap-8 mb-20'>
+    <section className='flex flex-col gap-8 mb-32'>
       <CheckoutForm disableSubmit={disableSubmit} />
     </section>
   )

@@ -1,78 +1,72 @@
-"use client"
-import { createContext, useContext, useEffect, useState } from "react"
-import Modal, { Body, Content, Footer, Header } from "./ui/Modal"
+import { useContext, useEffect, useState } from "react"
+import Modal, { Body, Content, Header, Trigger, Footer, modalContext, ModalProvider } from "./ui/Modal"
 import { FormControl, FormErrorMessage, FormLabel, Input } from "@chakra-ui/react"
+import ImagesInput, {Trigger as ImagesTrigger, Preview} from "./ui/ImagesInput"
+import TextAreaExpand from "./ui/TextAreaExpand"
+import { IoMdAdd } from "react-icons/io"
+import { AlertMessageProvider, alertMessageContext } from "./AlertMessage"
 import ButtonPrimary from "./ui/ButtonPrimary"
 import { useCollections } from "./provider/CollectionsProvider"
-import TextAreaExpand from "./ui/TextAreaExpand"
-import ImagesInput, { Preview, Trigger } from "./ui/ImagesInput"
-import { useAlert } from "./AlertMessage"
 
-const collectionUpdateContext = createContext<CollectionUpdateProvider | null>(null)
-
-const CollectionUpdate = ({children}:{children:React.ReactNode}) => {
-  const [id, setId] = useState<string|null>(null)
-
-  const onClose = () => {
-    setId(null)
-  }
+const CollectionCreate = () => {
   return (
-    <collectionUpdateContext.Provider value={{ id, setId }}>
-      {children}
-      <div className="relative z-[1000]">
-      <Modal defaultValue>
-        {id && (
-          <Content width={512} onClose={() => onClose()} className="flex flex-col relative pb-20">
-              <div>
-                <Header title="Ubah Koleksi" onClose={() => onClose()}/>
-              </div>
-              <FormUpdate id={id} />
-          </Content>
-        )}
-      </Modal>
-      </div>
-
-    </collectionUpdateContext.Provider>
+    <Modal> 
+      <Trigger className="flexCenter bg-transparent border border-blue-400 text-blue-500 px-2 ss:px-3 py-[7px] ss:py-2 rounded-lg text-sm ss:text-[15px]">
+        <span className="text-center -mt-[2px]">Buat koleksi</span>
+      </Trigger>
+      <FormContent />
+    </Modal>
   )
 }
-
-type OldImage = {
-  id: string,
-  image: string
-}
-
-const FormUpdate = ({id}:{id:string}) => {
-  const { findCollection, updateCollection } = useCollections()
-  const [formData, setFormData] = useState({...findCollection(id)})
-  const [disabledButton, setDisabledButton] = useState<boolean>(true)
-  const { setAlert } = useAlert()
-  const { setId } = useCollectionUpdate()
-  const isFormDataValid = () => {
-    return formData.images!.length < 1
+export const defaultData = {
+    name: "",
+    createdBy: "",
+    discovery_year: "",
+    origin: "",
+    images: [],
+    description: ""
   }
-  
+
+const FormContent = () => {  
+  const [formData, setFormData] = useState<CollectionCreate>(defaultData)
+  const [disabledButton, setDisabledButton] = useState<boolean>(true)
+  const { toggleModal } = useContext(modalContext) as ModalProvider
+  const { setAlert } = useContext(alertMessageContext) as AlertMessageProvider
+  const { addCollection } = useCollections()
+
+  const isFormDataNotEmpty = () => {
+    return formData.name && formData.createdBy && formData.origin && formData.discovery_year && formData.description 
+    && formData.images.length > 0
+  }
   useEffect(() => {
-    if(!formData) return;
-      setDisabledButton(isFormDataValid())
+    setDisabledButton(isFormDataNotEmpty() ? false : true)
   },[formData])
 
   const submitForm = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if(!formData) return;
-    updateCollection(formData as Collection)
-    setId(null)
+    const newCollection = { 
+      id: `${Date.now}`,
+      ...formData
+    }
+    addCollection(newCollection)
+    setFormData(defaultData)
+    toggleModal()
     setAlert({
       success: true,
-      message: "Koleksi berhasil di update"
+      message: "Koleksi berhasil ditambahkan."
     })
   }
-  const onChange = (field: keyof CollectionCreate, value: string|number|string[]) => {
+  const onChange = (field: keyof CollectionCreate, value: any) => {
     setFormData((prev) => {
       return {...prev,[field]:value}
     })
   }
-  return formData && (
-     <form onSubmit={submitForm} className="mt-2 overflow-y-auto px-6 rounded-xl">
+  return (
+    <Content width={512} onClose={() => setFormData(defaultData)} className="flex flex-col relative pb-20">
+      <div>
+        <Header title="Buat Koleksi" onClose={() => setFormData(defaultData)}/>
+      </div>
+      <form onSubmit={submitForm} className="mt-2 overflow-y-auto px-6 rounded-xl">
         <Body className="flex flex-col gap-4">
           <FormControl>
             <FormLabel
@@ -121,14 +115,13 @@ const FormUpdate = ({id}:{id:string}) => {
           <FormControl>
             <FormLabel
             fontWeight={400} fontSize={15} className='font-normal text-xs'>Foto Koleksi</FormLabel>
-            <ImagesInput
-            value={formData.images as string[]} 
-            onChange={(images) => onChange('images',images)}
-            >
+            <ImagesInput 
+            value={formData.images} 
+            onChange={(images) => onChange('images',images)}>
               <Preview />
-              <Trigger className="px-3 py-[6px] rounded-lg bg-blue-500 text-white">
+              <ImagesTrigger className="px-3 py-[6px] rounded-lg bg-blue-500 text-white text-sm -mt-1">
                 Tambah Foto
-              </Trigger>
+              </ImagesTrigger>
             </ImagesInput>
           </FormControl> 
           <FormControl>
@@ -147,14 +140,11 @@ const FormUpdate = ({id}:{id:string}) => {
           type="submit"
           disabled={disabledButton}
           className="!rounded-lg bg-blue-500 text-white"
-          >Update</ButtonPrimary> 
+          >Submit</ButtonPrimary> 
         </Footer> 
       </form>
+    </Content>
   )
 }
 
-export const useCollectionUpdate = () => {
-  return useContext(collectionUpdateContext) as CollectionUpdateProvider
-}
-
-export default CollectionUpdate
+export default CollectionCreate

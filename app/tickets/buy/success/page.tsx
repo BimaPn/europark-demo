@@ -18,8 +18,8 @@ const Page = () => {
     }
   },[])
 
-  return isDone && (
-    <section className="flexBetween flex-col items-center h-full">
+  return  (
+    <section className="flexBetween flex-col items-center h-svh">
       <div className="flex flex-col items-center">
         <SuccessIcon width={230}/>
         <span className="font-medium text-xl">Tiket berhasil dibuat !</span>
@@ -42,12 +42,13 @@ const Page = () => {
         </div>
 
       </div>
-      <div className="w-full ss:w-[546px] py-4 px-4 flex gap-6 flexCenter text-center fixed bottom-0 left-0 right-0 mx-auto">
+      <div className="w-full ss:w-[546px] py-4 px-3 flex gap-3 flexCenter text-center sticky bottom-0 left-0 right-0 mx-auto bg-white">
         <Link href={`/`} className="basis-1/2 px-4 py-2 border-2 border-gray-300 rounded-full">Beranda</Link>
         <Link href={`/tickets/buy`} className="basis-1/2 px-4 py-2 bg-blue-500 text-white font-medium rounded-full">
         Beli tiket lagi 
         </Link>
       </div>
+
     </section>
   )
 }

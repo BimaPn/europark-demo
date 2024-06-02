@@ -28,7 +28,7 @@ const data = {
 }
 const TicketAnalytic = ({className}:{className?:string}) => {
   return (
-    <div className={`bg-white rounded-lg px-4 pt-[68px] pb-4 relative ${className}`}>
+    <div className={`bg-white ss:rounded-lg px-3 ss:px-4 pt-[68px] pb-4 relative ${className}`}>
       <div className='w-full px-4 pt-4 absolute top-0 left-0 flexBetween'>
         <span className='font-semibold text-slate-600 text-sm ss:text-base'>Tickets Selling</span>
 

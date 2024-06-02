@@ -25,6 +25,8 @@ import { FiChevronDown, FiMenu } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import Sidebar from '@/components/dashboard/Sidebar'
 import ButtonLogout from '../ui/ButtonLogout'
+import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
@@ -88,6 +90,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
 const TopSideBar = ({avatar, name}:{avatar:string, name:string}) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const path = usePathname()
+  useEffect(() => {
+    onClose()
+  },[path])
   return (
     <>
       <Sidebar onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
