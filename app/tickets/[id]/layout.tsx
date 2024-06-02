@@ -12,9 +12,9 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
     return (
-      <section className="boxWidth flex flex-col h-screen min-h-screen relative">
-        <AdminNavbar className="sticky top-0 right-0 left-0 z-[1000]"  />
-        <main className="w-[584px] flex flex-col px-4 mx-auto h-full">
+      <section className="w-full flex flex-col h-svh min-h-svh relative">
+        <AdminNavbar className="sticky top-0 right-0 left-0 z-[1000] px-3"  />
+        <main className="w-full ss:w-[556px] flex flex-col mx-auto h-full">
           {children}
         </main>
       </section>

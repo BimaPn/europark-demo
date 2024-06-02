@@ -19,7 +19,7 @@ const TicketDetail = ({data}:{data:Ticket}) => {
   } 
 
   return (
-    <section className="flexBetween flex-col items-center h-full mt-2">
+    <section className="w-full flexBetween flex-col items-center h-full mt-2">
         <div className="flex flex-col items-center mb-4">
           <Image
           width={400}
@@ -30,7 +30,7 @@ const TicketDetail = ({data}:{data:Ticket}) => {
           draggable={false} 
           />
         </div>
-        <div className="w-full px-8 mb-6">
+        <div className="w-full px-3 sm:px-8 mb-6">
           <div className="text-center mb-3 mt-1">
             <span className="font-medium mb-2">Detail Tiket</span>
           </div>
