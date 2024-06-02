@@ -16,7 +16,7 @@ import { useTickets } from "../provider/TicketsProvider"
 import TicketScan from "../TicketScan"
 import ChangeTicketPrice from "../ticket/ChangeTicketPrice"
 
-const ITEMS_PER_PAGE = 2
+const ITEMS_PER_PAGE = 10
 
 const TicketData = () => {
   const { searchTickets } = useTickets()

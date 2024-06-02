@@ -73,7 +73,7 @@ const FieldItem = ({title, children}:{title:string, children: React.ReactNode}) 
 
 const Actions = ({ticketId}:{ticketId:string}) => {
   return (
-    <div className="w-full py-4 px-4 flex gap-6 text-center sticky bottom-0 bg-white">
+    <div className="w-full py-4 px-3 flex gap-3 text-center sticky bottom-0 bg-white">
       <Link
       href={`/admin/dashboard/home`}
       className="basis-1/2 px-4 py-2 border-2 border-gray-300 rounded-full"

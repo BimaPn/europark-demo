@@ -8,6 +8,7 @@ import { MdOutlineCollectionsBookmark } from "react-icons/md"
 import { AiOutlineDollar } from "react-icons/ai"
 import Link from "next/link"
 import { FiHome } from "react-icons/fi"
+import { BsCollection } from "react-icons/bs"
 
 interface LinkItemProps {
   name: string
@@ -41,7 +42,7 @@ const dashboardNavigations = [
   },
   { 
     name: 'Koleksi',
-    icon: <MdOutlineCollectionsBookmark className="text-[21px]" />,
+    icon: <BsCollection className="text-[18px]" />,
     path: 'collections'
   },
 ]

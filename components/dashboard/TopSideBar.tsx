@@ -78,8 +78,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             <MenuList
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
+              className='!flex !justify-start'
               >
-              <ButtonLogout>Logout</ButtonLogout>
+              <button onClick={() => console.log("Cannot logout, You are in demo version.")} className='px-5'>Logout</button>
             </MenuList>
           </Menu>
         </Flex>
